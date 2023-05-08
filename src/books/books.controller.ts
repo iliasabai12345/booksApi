@@ -3,22 +3,14 @@ import { CreateBookDto } from "./dto/create-book.dto";
 import { UpdateBookDto } from "./dto/update-book.dto";
 import { BooksService } from "./books.service";
 import { Book } from "./schemas/book.schema";
-import { ApiBody } from "@nestjs/swagger";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 
 @Controller("books")
+@ApiTags("Books")
 export class BooksController {
 
   constructor(private readonly booksService: BooksService) {
   }
-
-  // Получение гет запроса
-  /*  @Get()
-     @Redirect("https://google.com", 301)
-    getAll(@Req() req: Request, @Res() res: Response) {
-      res.status(201).end();
-      return "ilias";
-    }*/
-
 
   @Get()
   getAll(): Promise<{ code: number; data: Book[]; message: string }> {
