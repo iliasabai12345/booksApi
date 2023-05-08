@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { CreateBookDto } from "./dto/create-book.dto";
 import { UpdateBookDto } from "./dto/update-book.dto";
 import { BooksService } from "./books.service";
 import { Book } from "./schemas/book.schema";
+import { ApiBody } from "@nestjs/swagger";
 
 @Controller("books")
 export class BooksController {
@@ -20,34 +21,34 @@ export class BooksController {
 
 
   @Get()
-  getAll() {
+  getAll(): Promise<{ code: number; data: Book[]; message: string }> {
     return this.booksService.getAll();
   }
 
   //Получение одного елемента оп гет запросу
   @Get(":id")
   @HttpCode(HttpStatus.OK)
-  @Header("Cache-Control", "none")
-  getOne(@Param("id") id: string): Promise<Book> {
+  getOne(@Param("id") id: string): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.getOne(id);
   }
 
   //Запись данных
   @Post()
-  create(@Body() createBookDto: CreateBookDto): Promise<Book> {
+  @ApiBody({ type: CreateBookDto })
+  create(@Body() createBookDto: CreateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.create(createBookDto);
   }
 
   // Delete book
   @Delete(":id")
-  remove(@Param("id") id: string): Promise<Book> {
+  remove(@Param("id") id: string): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.remove(id);
   }
 
 
   // Update book
   @Put(":id")
-  update(@Param("id") id, @Body() updateProductDto: UpdateBookDto): Promise<UpdateBookDto> {
+  update(@Param("id") id, @Body() updateProductDto: UpdateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.update(id, updateProductDto);
   }
 }

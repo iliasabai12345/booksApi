@@ -11,24 +11,90 @@ export class BooksService {
   constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>) {
   }
 
-  async getAll(): Promise<Book[]> {
-    return this.bookModel.find().exec();
+  async getAll(): Promise<{ code: number, data: Book[], message: string }> {
+    try {
+      const data = await this.bookModel.find().exec();
+      return {
+        code: 0,
+        data,
+        message: "Книги успешно загружены"
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: [],
+        message: e
+      };
+    }
+
   }
 
-  async getOne(id): Promise<Book> {
-    return this.bookModel.findById(id);
+  async getOne(id): Promise<{ code: number, data: Book, message: string }> {
+    try {
+      const data = await this.bookModel.findById(id);
+      return {
+        code: 0,
+        data,
+        message: "Книги успешно загружены"
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
+      };
+    }
   }
 
-  async create(createBookDto: CreateBookDto): Promise<Book> {
-    const newBook = new this.bookModel(createBookDto);
-    return newBook.save();
+  async create(createBookDto: CreateBookDto): Promise<{ code: number, data: Book, message: string }> {
+    try {
+      const newBook = new this.bookModel(createBookDto);
+      const data = await newBook.save();
+      return {
+        code: 0,
+        data,
+        message: `Книга ${data.title} успешно загружено!`
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
+      };
+    }
   }
 
-  async remove(id): Promise<Book> {
-    return this.bookModel.findByIdAndDelete(id);
+  async remove(id): Promise<{ code: number, data: Book, message: string }> {
+    try {
+      const data: Book = await this.bookModel.findByIdAndDelete(id);
+      return {
+        code: 0,
+        data,
+        message: `Книга ${data.title} успешно загружено`
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
+      };
+    }
   }
 
-  async update(id, bookDto: UpdateBookDto): Promise<UpdateBookDto> {
-    return this.bookModel.findByIdAndUpdate(id, bookDto, { new: true });
+  async update(id, bookDto: UpdateBookDto): Promise<{ code: number, data: Book, message: string }> {
+    try {
+      const data: Book = await this.bookModel.findByIdAndUpdate(id, bookDto, { new: true });
+      return {
+        code: 0,
+        data,
+        message: `Книга ${data.title} успешно обновлено!`
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
+      };
+    }
   }
 }
