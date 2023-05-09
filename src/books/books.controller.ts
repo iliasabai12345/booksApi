@@ -4,6 +4,8 @@ import { UpdateBookDto } from "./dto/update-book.dto";
 import { BooksService } from "./books.service";
 import { Book } from "./schemas/book.schema";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { RS_BOOKS, RS_TTL_BOOKS } from "../shared/constants/redis";
 
 @Controller("books")
 @ApiTags("Books")
@@ -13,6 +15,8 @@ export class BooksController {
   }
 
   @Get()
+  @CacheKey(RS_BOOKS)
+  @CacheTTL(RS_TTL_BOOKS)
   getAll(): Promise<{ code: number; data: Book[]; message: string }> {
     return this.booksService.getAll();
   }
@@ -42,5 +46,11 @@ export class BooksController {
   @Put(":id")
   update(@Param("id") id, @Body() updateProductDto: UpdateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.update(id, updateProductDto);
+  }
+
+  // fill books
+  @Post("/fill")
+  fillBooks(@Body() createBookDto: CreateBookDto[]) {
+    return this.booksService.fillBooks(createBookDto);
   }
 }

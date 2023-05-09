@@ -1,19 +1,30 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { CreateBookDto } from "./dto/create-book.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Book, BookDocument } from "./schemas/book.schema";
 import { Model } from "mongoose";
 import { UpdateBookDto } from "./dto/update-book.dto";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
 
 @Injectable()
 export class BooksService {
 
-  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>) {
+  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>,
+              @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {
   }
 
   async getAll(): Promise<{ code: number, data: Book[], message: string }> {
+/*    const value: Book[] = await this.cacheManager.get("books");
+    if (value) return {
+      code: 0,
+      data: value,
+      message: "Книги успешно загружены"
+    };*/
     try {
       const data = await this.bookModel.find().exec();
+      // await this.cacheManager.set("books", data, 5000);
       return {
         code: 0,
         data,
@@ -70,13 +81,13 @@ export class BooksService {
       return {
         code: 0,
         data,
-        message: `Книга ${data.title} успешно загружено`
+        message: `Книга ${data.title} успешно удалено`
       };
     } catch (e) {
       return {
         code: 1,
         data: null,
-        message: e
+        message: `Произошла ошибка во время удаления книги`
       };
     }
   }
@@ -93,8 +104,16 @@ export class BooksService {
       return {
         code: 1,
         data: null,
-        message: e
+        message: "Произошла ошибка во время обновления книги"
       };
+    }
+  }
+
+
+  async fillBooks(createBookDto) {
+    for (const book of createBookDto) {
+      const newBook = new this.bookModel(book);
+      await newBook.save();
     }
   }
 }
