@@ -1,10 +1,12 @@
-import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { BooksModule } from "./books/books.module";
-import { MongooseModule } from "@nestjs/mongoose";
-import { CacheInterceptor, CacheModule } from "@nestjs/cache-manager";
-import { APP_INTERCEPTOR } from "@nestjs/core";
+import {Module} from "@nestjs/common";
+import {AppController} from "./app.controller";
+import {AppService} from "./app.service";
+import {BooksModule} from "./books/books.module";
+import {MongooseModule} from "@nestjs/mongoose";
+import {CacheInterceptor, CacheModule} from "@nestjs/cache-manager";
+import {APP_INTERCEPTOR} from "@nestjs/core";
+import {BannersModule} from './banners/banners.module';
+
 @Module({
   imports: [
     BooksModule,
@@ -13,7 +15,8 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
       isGlobal: true,
       host: 'localhost',
       port: 6379,
-    })
+    }),
+    BannersModule
   ],
   controllers: [AppController],
   providers: [AppService, {

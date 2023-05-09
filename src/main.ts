@@ -6,8 +6,8 @@ import { ValidationPipe } from "@nestjs/common";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // Автоматический удаляет лишние поля смотря на dto
-    forbidNonWhitelisted: true // Если есть ненужные поля то возвращяет ошибку
+    // whitelist: true, // Автоматический удаляет лишние поля смотря на dto // todo why hahaha
+    // forbidNonWhitelisted: true // Если есть ненужные поля то возвращяет ошибку // todo why hahaha
   }));
   const config = new DocumentBuilder()
     .setTitle("Books store")

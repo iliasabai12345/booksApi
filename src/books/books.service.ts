@@ -1,17 +1,14 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { CreateBookDto } from "./dto/create-book.dto";
-import { InjectModel } from "@nestjs/mongoose";
-import { Book, BookDocument } from "./schemas/book.schema";
-import { Model } from "mongoose";
-import { UpdateBookDto } from "./dto/update-book.dto";
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Cache } from "cache-manager";
+import {Injectable} from "@nestjs/common";
+import {CreateBookDto} from "./dto/create-book.dto";
+import {InjectModel} from "@nestjs/mongoose";
+import {Book, BookDocument} from "./schemas/book.schema";
+import {Model} from "mongoose";
+import {UpdateBookDto} from "./dto/update-book.dto";
 
 @Injectable()
 export class BooksService {
 
-  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>,
-              @Inject(CACHE_MANAGER) private cacheManager: Cache
+  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>
   ) {
   }
 

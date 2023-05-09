@@ -3,7 +3,7 @@ import { CreateBookDto } from "./dto/create-book.dto";
 import { UpdateBookDto } from "./dto/update-book.dto";
 import { BooksService } from "./books.service";
 import { Book } from "./schemas/book.schema";
-import { ApiBody, ApiTags } from "@nestjs/swagger";
+import {ApiBody, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
 import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 import { RS_BOOKS, RS_TTL_BOOKS } from "../shared/constants/redis";
 
@@ -31,12 +31,20 @@ export class BooksController {
   //Запись данных
   @Post("addBook")
   @ApiBody({ type: CreateBookDto })
+  @ApiCreatedResponse({
+    description: 'Запись книги на базу .',
+    type: CreateBookDto,
+  })
   create(@Body() createBookDto: CreateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.create(createBookDto);
   }
 
   // Delete book
   @Delete("deleteBook/:id")
+  @ApiCreatedResponse({
+    description: 'Удаление книги с базы',
+    type: CreateBookDto,
+  })
   remove(@Param("id") id: string): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.remove(id);
   }
