@@ -14,7 +14,7 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {
   }
 
-  @Get()
+  @Get("getAllBooks")
   @CacheKey(RS_BOOKS)
   @CacheTTL(RS_TTL_BOOKS)
   getAll(): Promise<{ code: number; data: Book[]; message: string }> {
@@ -22,35 +22,29 @@ export class BooksController {
   }
 
   //Получение одного елемента оп гет запросу
-  @Get(":id")
+  @Get("getOneBook/:id")
   @HttpCode(HttpStatus.OK)
   getOne(@Param("id") id: string): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.getOne(id);
   }
 
   //Запись данных
-  @Post()
+  @Post("addBook")
   @ApiBody({ type: CreateBookDto })
   create(@Body() createBookDto: CreateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.create(createBookDto);
   }
 
   // Delete book
-  @Delete(":id")
+  @Delete("deleteBook/:id")
   remove(@Param("id") id: string): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.remove(id);
   }
 
 
   // Update book
-  @Put(":id")
+  @Put("updateBook/:id")
   update(@Param("id") id, @Body() updateProductDto: UpdateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.update(id, updateProductDto);
-  }
-
-  // fill books
-  @Post("/fill")
-  fillBooks(@Body() createBookDto: CreateBookDto[]) {
-    return this.booksService.fillBooks(createBookDto);
   }
 }

@@ -16,15 +16,8 @@ export class BooksService {
   }
 
   async getAll(): Promise<{ code: number, data: Book[], message: string }> {
-/*    const value: Book[] = await this.cacheManager.get("books");
-    if (value) return {
-      code: 0,
-      data: value,
-      message: "Книги успешно загружены"
-    };*/
     try {
       const data = await this.bookModel.find().exec();
-      // await this.cacheManager.set("books", data, 5000);
       return {
         code: 0,
         data,
@@ -46,7 +39,7 @@ export class BooksService {
       return {
         code: 0,
         data,
-        message: "Книги успешно загружены"
+        message: "Книга успешно загружены"
       };
     } catch (e) {
       return {
@@ -106,14 +99,6 @@ export class BooksService {
         data: null,
         message: "Произошла ошибка во время обновления книги"
       };
-    }
-  }
-
-
-  async fillBooks(createBookDto) {
-    for (const book of createBookDto) {
-      const newBook = new this.bookModel(book);
-      await newBook.save();
     }
   }
 }
