@@ -10,7 +10,7 @@ export class Banner {
     @Prop()
     image: string;
     @Prop()
-    link: string;
+    isActive: boolean;
 }
 
 export const BannerSchema = SchemaFactory.createForClass(Banner);

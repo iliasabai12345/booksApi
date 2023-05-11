@@ -16,10 +16,10 @@ export class CreateBannerDto {
     readonly image: string;
 
     @ApiProperty({
-        description: "Ссылка баннера",
+        description: "Активный ли баннер",
         default: "http://product/3561478",
-        type: String
+        type: Boolean
     })
-    readonly link: string;
+    readonly isActive: boolean;
 }
 

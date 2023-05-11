@@ -27,7 +27,6 @@ export class BooksService {
         message: e
       };
     }
-
   }
 
   async getOne(id): Promise<{ code: number, data: Book, message: string }> {

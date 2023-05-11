@@ -1,6 +1,8 @@
-import {Body, Controller, Post} from '@nestjs/common';
-import {BannersService} from "./banners.service";
+import {CacheKey, CacheTTL} from "@nestjs/cache-manager";
+import {Body, Controller, Get, Post} from '@nestjs/common';
 import {ApiBody, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
+import {RS_BANNERS, RS_TTL_BOOKS} from "src/shared/constants/redis";
+import {BannersService} from "./banners.service";
 import {CreateBannerDto} from "./dto/create-banner.dto";
 import {Banner} from "./schemas/banner.schema";
 
@@ -11,6 +13,13 @@ export class BannersController {
     constructor(private readonly bannersService: BannersService) {
     }
 
+
+    @Get("getBanners")
+    // @CacheKey(RS_BANNERS)
+    // @CacheTTL(RS_TTL_BOOKS)// todo return
+    getAll(): Promise<{ code: number; data: Banner[]; message: string }> {
+        return this.bannersService.getAll();
+    }
 
     //Запись данных
     @Post("addBanner")
