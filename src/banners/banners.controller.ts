@@ -15,8 +15,8 @@ export class BannersController {
 
 
     @Get("getBanners")
-    // @CacheKey(RS_BANNERS)
-    // @CacheTTL(RS_TTL_BOOKS)// todo return
+    @CacheKey(RS_BANNERS)
+    @CacheTTL(RS_TTL_BOOKS)
     getAll(): Promise<{ code: number; data: Banner[]; message: string }> {
         return this.bannersService.getAll();
     }
