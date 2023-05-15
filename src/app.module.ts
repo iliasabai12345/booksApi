@@ -7,6 +7,7 @@ import {AppService} from "./app.service";
 import {BannersModule} from './banners/banners.module';
 import {BooksModule} from "./books/books.module";
 import {CategoriesModule} from './categories/categories.module';
+import {LocationsModule} from './locations/locations.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import {CategoriesModule} from './categories/categories.module';
       port: 6379,
     }),
     BannersModule,
-    CategoriesModule
+    CategoriesModule,
+    LocationsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
