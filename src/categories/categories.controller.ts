@@ -25,4 +25,10 @@ export class CategoriesController {
     create(@Body() createBookDto: CreateCategoryDto): Promise<{ code: number; data: Category; message: string }> {
         return this.categoriesService.create(createBookDto);
     }
+
+    //Получение контента
+    @Get("getContents")
+    getContents(): Promise<{ code: number; data: Category[]; message: string }> {
+        return this.categoriesService.getContents();
+    }
 }

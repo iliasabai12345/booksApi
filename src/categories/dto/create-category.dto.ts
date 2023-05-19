@@ -20,5 +20,11 @@ export class CreateCategoryDto {
     type: String
   })
   readonly title_kk: string;
+  @ApiProperty({
+    description: "Наличие в контенте",
+    default: false,
+    type: Boolean
+  })
+  readonly is_content: string;
 }
 

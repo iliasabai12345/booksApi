@@ -46,4 +46,21 @@ export class CategoriesService {
         }
     }
 
+    async getContents(): Promise<{ code: number, data: Category[], message: string }> {
+        try {
+            const categories = await this.categoryModel.find().exec();
+            const data = categories.filter(book => book.is_content);
+            return {
+                code: 0,
+                data,
+                message: "Контент успешно загружены"
+            };
+        } catch (e) {
+            return {
+                code: 1,
+                data: [],
+                message: e
+            };
+        }
+    }
 }

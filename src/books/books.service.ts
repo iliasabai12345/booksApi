@@ -1,9 +1,7 @@
-import {CACHE_MANAGER} from "@nestjs/cache-manager";
-import {Inject, Injectable} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
-import {Cache} from "cache-manager";
 import {Model} from "mongoose";
-import {SearchedBooks} from "src/books/searchedBooka";
+import {BooksTemp} from "src/shared/books/books";
 import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
 import {Book, BookDocument} from "./schemas/book.schema";
@@ -11,14 +9,20 @@ import {Book, BookDocument} from "./schemas/book.schema";
 @Injectable()
 export class BooksService {
 
-  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>,
-              @Inject(CACHE_MANAGER) private cacheManager: Cache
+  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>
   ) {
   }
 
   async getAll(): Promise<{ code: number, data: Book[], message: string }> {
     try {
-      const data = await this.bookModel.find().exec();
+      const value = BooksTemp.data;
+      let data;
+      if (value.length) {
+        data = value;
+      } else {
+        data = await this.bookModel.find().exec();
+        BooksTemp.data = data;
+      }
       return {
         code: 0,
         data,
@@ -104,13 +108,13 @@ export class BooksService {
 
   async getSearchedBooks(prop): Promise<{ code: number, data: Book[], message: string }> {
     try {
-      const value = SearchedBooks.data;
+      const value = BooksTemp.data;
       let data;
       if (value.length) {
         data = value.filter(book => book.title.toLowerCase().includes(prop.toLowerCase()))
       } else {
         data = await this.bookModel.find().exec();
-        SearchedBooks.data = data;
+        BooksTemp.data = data;
       }
       return {
         code: 0,

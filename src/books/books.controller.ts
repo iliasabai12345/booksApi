@@ -1,7 +1,5 @@
-import {CacheKey, CacheTTL} from "@nestjs/cache-manager";
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put} from "@nestjs/common";
 import {ApiBody, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
-import {RS_BOOKS, RS_TTL_BOOKS} from "../shared/constants/redis";
 import {BooksService} from "./books.service";
 import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
@@ -15,8 +13,8 @@ export class BooksController {
   }
 
   @Get("getAllBooks")
-  @CacheKey(RS_BOOKS)
-  @CacheTTL(RS_TTL_BOOKS)
+  // @CacheKey(RS_BOOKS)
+  // @CacheTTL(RS_TTL_BOOKS)
   getAll(): Promise<{ code: number; data: Book[]; message: string }> {
     return this.booksService.getAll();
   }

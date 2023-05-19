@@ -11,6 +11,8 @@ export class Category {
   title: string;
   @Prop()
   title_kk: string;
+  @Prop()
+  is_content: boolean;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
