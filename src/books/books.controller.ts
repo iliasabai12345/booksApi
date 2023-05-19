@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common";
-import { CreateBookDto } from "./dto/create-book.dto";
-import { UpdateBookDto } from "./dto/update-book.dto";
-import { BooksService } from "./books.service";
-import { Book } from "./schemas/book.schema";
+import {CacheKey, CacheTTL} from "@nestjs/cache-manager";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put} from "@nestjs/common";
 import {ApiBody, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
-import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
-import { RS_BOOKS, RS_TTL_BOOKS } from "../shared/constants/redis";
+import {RS_BOOKS, RS_TTL_BOOKS} from "../shared/constants/redis";
+import {BooksService} from "./books.service";
+import {CreateBookDto} from "./dto/create-book.dto";
+import {UpdateBookDto} from "./dto/update-book.dto";
+import {Book} from "./schemas/book.schema";
 
 @Controller("books")
 @ApiTags("Books")
@@ -54,5 +54,13 @@ export class BooksController {
   @Put("updateBook/:id")
   update(@Param("id") id, @Body() updateProductDto: UpdateBookDto): Promise<{ code: number; data: Book; message: string }> {
     return this.booksService.update(id, updateProductDto);
+  }
+
+  // Search books
+  //Получение поиска книг гет запросу
+  @Get("getSearchedBooks/:prop")
+  @HttpCode(HttpStatus.OK)
+  getSearchedBooks(@Param("prop") prop: string): Promise<{ code: number; data: Book[]; message: string }> {
+    return this.booksService.getSearchedBooks(prop);
   }
 }

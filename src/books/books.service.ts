@@ -1,14 +1,18 @@
-import {Injectable} from "@nestjs/common";
-import {CreateBookDto} from "./dto/create-book.dto";
+import {CACHE_MANAGER} from "@nestjs/cache-manager";
+import {Inject, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
-import {Book, BookDocument} from "./schemas/book.schema";
+import {Cache} from "cache-manager";
 import {Model} from "mongoose";
+import {SearchedBooks} from "src/books/searchedBooka";
+import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
+import {Book, BookDocument} from "./schemas/book.schema";
 
 @Injectable()
 export class BooksService {
 
-  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>
+  constructor(@InjectModel(Book.name) private bookModel: Model<BookDocument>,
+              @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {
   }
 
@@ -94,6 +98,30 @@ export class BooksService {
         code: 1,
         data: null,
         message: "Произошла ошибка во время обновления книги"
+      };
+    }
+  }
+
+  async getSearchedBooks(prop): Promise<{ code: number, data: Book[], message: string }> {
+    try {
+      const value = SearchedBooks.data;
+      let data;
+      if (value.length) {
+        data = value.filter(book => book.title.toLowerCase().includes(prop.toLowerCase()))
+      } else {
+        data = await this.bookModel.find().exec();
+        SearchedBooks.data = data;
+      }
+      return {
+        code: 0,
+        data,
+        message: `Найдено ${data.length} книг`
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
       };
     }
   }
