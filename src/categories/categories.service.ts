@@ -69,7 +69,7 @@ export class CategoriesService {
                     category: category,
                     title: content_categories.find(res => res.keyword === category).title,
                     title_kk: content_categories.find(res => res.keyword === category).title_kk,
-                    books: BooksTemp.data.filter(book => book.category === category).splice(0, 4)
+                    books: BooksTemp.data.filter(book => book.category === category).splice(0, 5)
                 })
             })
             return {
