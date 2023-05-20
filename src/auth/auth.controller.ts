@@ -12,10 +12,10 @@ export class AuthController {
     }
 
     //Получение одного елемента оп гет запросу
-    @Get("getOneBook/:id")
+    @Get("getUser/:username/:password")
     @HttpCode(HttpStatus.OK)
-    getOne(@Param("id") id: string): Promise<{ code: number; data: User; message: string }> {
-        return this.authsService.getOne(id);
+    getOne(@Param("username") username: string, @Param("password") password: string): Promise<{ code: number; data: User; message: string }> {
+        return this.authsService.getOne(username, password);
     }
 
     //Запись данных

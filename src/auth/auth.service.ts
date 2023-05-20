@@ -9,9 +9,16 @@ export class AuthService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
     }
 
-    async getOne(username): Promise<{ code: number, data: User, message: string }> {
+    async getOne(username, password): Promise<{ code: number, data: User, message: string }> {
         try {
             const data = await this.userModel.findOne({username});
+            if (data.password !== password) {
+                return {
+                    code: 1,
+                    data: null,
+                    message: `Неправильный пароль`
+                };
+            }
             return {
                 code: 0,
                 data,
