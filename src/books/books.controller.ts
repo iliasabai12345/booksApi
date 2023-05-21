@@ -61,4 +61,11 @@ export class BooksController {
   getSearchedBooks(@Param("prop") prop: string): Promise<{ code: number; data: Book[]; message: string }> {
     return this.booksService.getSearchedBooks(prop);
   }
+
+  // Get category books
+  @Get("getCategoryBooks/:category")
+  @HttpCode(HttpStatus.OK)
+  getCategoryBooks(@Param("category") category: string): Promise<{ code: number; data: Book[]; message: string }> {
+    return this.booksService.getCategoryBooks(category);
+  }
 }

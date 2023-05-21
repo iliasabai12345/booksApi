@@ -129,4 +129,35 @@ export class BooksService {
       };
     }
   }
+
+  // Получение книги по категорий
+  async getCategoryBooks(category): Promise<{ code: number, data: any, message: string }> {
+    try {
+      const books = await this.bookModel.find({category});
+      if (!books.length) {
+        return {
+          code: 0,
+          data: null,
+          message: `Не найдено книг по данной категорий`
+        };
+      }
+      const data = {
+        category: books[0].category,
+        category_name_kz: books[0].category_name_kz,
+        category_name_ru: books[0].category_name_ru,
+        books: books
+      }
+      return {
+        code: 0,
+        data,
+        message: `Категория успешно загружено`
+      };
+    } catch (e) {
+      return {
+        code: 1,
+        data: null,
+        message: e
+      };
+    }
+  }
 }
