@@ -14,5 +14,12 @@ export class CreateUserDto {
     type: String
   })
   readonly password: string;
+
+  @ApiProperty({
+    description: "Информация о пользователя",
+    default: false,
+    type: Boolean
+  })
+  readonly isAdmin: boolean;
 }
 
