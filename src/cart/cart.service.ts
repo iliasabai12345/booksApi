@@ -11,7 +11,7 @@ export class CartService {
 
     async create(createCartDto: CreateCartDto): Promise<{ code: number, data: Cart, message: string }> {
         try {
-            const current = await this.cartModel.findOne({sku: createCartDto.sku});
+            const current = await this.cartModel.findOne({sku: createCartDto.sku, user_id: createCartDto.user_id});
             if (current) {
                 return {
                     code: 1,
