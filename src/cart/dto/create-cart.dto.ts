@@ -10,6 +10,13 @@ export class CreateCartDto {
   readonly user_id: string;
 
   @ApiProperty({
+    description: "Идентификатор книги",
+    default: "123",
+    type: String
+  })
+  readonly book_id: string;
+
+  @ApiProperty({
     description: "Количество товара в корзине",
     default: "123",
     type: Number

@@ -8,6 +8,8 @@ export class Cart {
   @Prop()
   user_id: string
   @Prop()
+  book_id: string
+  @Prop()
   qty: number
   @Prop()
   title: string;
