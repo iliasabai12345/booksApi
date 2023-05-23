@@ -9,6 +9,24 @@ export class CartService {
     constructor(@InjectModel(Cart.name) private cartModel: Model<CartDocument>) {
     }
 
+    async getAll(id: string): Promise<{ code: number, data: Cart[], message: string }> {
+        try {
+            const data = await this.cartModel.find({user_id: id});
+            return {
+                code: 0,
+                data,
+                message: "Корзина успешно загружена"
+            };
+        } catch (e) {
+            return {
+                code: 1,
+                data: [],
+                message: e
+            };
+        }
+    }
+
+
     async create(createCartDto: CreateCartDto): Promise<{ code: number, data: Cart, message: string }> {
         try {
             const current = await this.cartModel.findOne({sku: createCartDto.sku, user_id: createCartDto.user_id});
