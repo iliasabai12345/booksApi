@@ -1,8 +1,9 @@
-import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put} from '@nestjs/common';
 import {ApiBody, ApiCreatedResponse, ApiTags} from "@nestjs/swagger";
 import {CreateBookDto} from "src/books/dto/create-book.dto";
 import {CartService} from "src/cart/cart.service";
 import {CreateCartDto} from "src/cart/dto/create-cart.dto";
+import {UpdateCartDto} from "src/cart/dto/update-cart.dto";
 import {Cart} from "src/cart/schemas/cart.schema";
 
 @Controller('cart')
@@ -27,5 +28,22 @@ export class CartController {
     })
     create(@Body() createCartDto: CreateCartDto): Promise<{ code: number; data: Cart; message: string }> {
         return this.cartService.create(createCartDto);
+    }
+
+    // Delete book
+    @Delete("deleteProductOfCart/:id/:user_id")
+    @ApiCreatedResponse({
+        description: 'Удаление книги с базы',
+        type: CreateBookDto,
+    })
+    remove(@Param("id") id: string, @Param("user_id") user_id: string): Promise<{ code: number; data: { deleted: Cart, products: Cart[] }; message: string }> {
+        return this.cartService.remove(id, user_id);
+    }
+
+
+    // Update book
+    @Put("changeProductQty/:id/")
+    update(@Param("id") id, @Body() updateCartDto: UpdateCartDto): Promise<{ code: number; data: Cart; message: string }> {
+        return this.cartService.changeQty(id, updateCartDto);
     }
 }
