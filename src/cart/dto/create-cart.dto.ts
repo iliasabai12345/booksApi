@@ -85,5 +85,12 @@ export class CreateCartDto {
     type: String
   })
   readonly category_name_kz: string;
+
+  @ApiProperty({
+    description: "общяя сумма",
+    default: 12554,
+    type: Number
+  })
+  readonly sum: number;
 }
 

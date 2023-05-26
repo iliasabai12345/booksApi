@@ -29,6 +29,8 @@ export class Cart {
   category_name_kz: string;
   @Prop()
   category_name_ru: string;
+  @Prop()
+  sum: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
