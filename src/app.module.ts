@@ -4,12 +4,13 @@ import {APP_INTERCEPTOR} from "@nestjs/core";
 import {MongooseModule} from "@nestjs/mongoose";
 import {AppController} from "./app.controller";
 import {AppService} from "./app.service";
+import {AuthModule} from './auth/auth.module';
 import {BannersModule} from './banners/banners.module';
 import {BooksModule} from "./books/books.module";
+import {CartModule} from './cart/cart.module';
 import {CategoriesModule} from './categories/categories.module';
 import {LocationsModule} from './locations/locations.module';
-import { AuthModule } from './auth/auth.module';
-import { CartModule } from './cart/cart.module';
+import {OrdersModule} from './orders/orders.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { CartModule } from './cart/cart.module';
     CategoriesModule,
     LocationsModule,
     AuthModule,
-    CartModule
+    CartModule,
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService, {
