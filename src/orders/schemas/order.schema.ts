@@ -34,7 +34,8 @@ export class Order {
   user_id: string;
   @Prop()
   user_name: string;
-
+  @Prop()
+  order_status: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
