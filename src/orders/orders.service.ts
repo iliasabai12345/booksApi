@@ -27,6 +27,23 @@ export class OrdersService {
         }
     }
 
+    async getUserAll(user_id): Promise<{ code: number, data: Order[], message: string }> {
+        try {
+            const data = await this.orderModel.find({user_id});
+            return {
+                code: 0,
+                data,
+                message: "Заказы успешно загружены"
+            };
+        } catch (e) {
+            return {
+                code: 1,
+                data: [],
+                message: e
+            };
+        }
+    }
+
     async create(createBookDto: any): Promise<{ code: number, data: Order, message: string }> {
         try {
             const newOrder = new this.orderModel(createBookDto);
