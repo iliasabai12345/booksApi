@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
+import {Cart} from "src/cart/schemas/cart.schema";
 import {Order, OrderDocument} from "src/orders/schemas/order.schema";
 
 @Injectable()
@@ -58,6 +59,23 @@ export class OrdersService {
                 code: 1,
                 data: null,
                 message: e
+            };
+        }
+    }
+
+    async change(id, updateCartDto: any): Promise<{ code: number, data: any, message: string }> {
+        try {
+            const data: Cart = await this.orderModel.findByIdAndUpdate(id, updateCartDto,{ new: true });
+            return {
+                code: 0,
+                data,
+                message: `Заказ успешно отменен`
+            };
+        } catch (e) {
+            return {
+                code: 1,
+                data: null,
+                message: "Произошла ошибка во время обновления книги"
             };
         }
     }
